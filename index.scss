@@ -1,0 +1,75 @@
+$green: #767A00;
+$fuchsia: #860037;
+$orange: #F69F19;
+$background: #D3C3B5;
+
+body {
+  min-width: 300px;
+  font-family: system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  margin: auto;
+}
+#intro-wrapper {
+  padding-top: 6rem;
+}
+#intro {
+  max-width: 40rem;
+  padding: 1rem;
+  margin: 0 auto;
+  text-align: center;
+}
+#intro-subtitle {
+  max-width: 500px;
+  margin: auto;
+  margin-top: 20px;
+  font-weight: 400;
+  text-align: left;
+  font-size: 17px;
+}
+#author-date {
+  max-width: 250px;
+  display: flex;
+  margin: auto;
+}
+#author {
+  width: 50%;
+  text-align: center;
+}
+#date {
+  width: 50%;
+  text-align: center;
+}
+#main {
+  max-width: 40rem;
+  padding: 1rem;
+  margin: auto;
+  height: 100%;
+}
+.triangle {
+  opacity: 0.5;
+  fill: $background;
+}
+.axisLabels {
+  font-weight: 700;
+  font-size: 16px;
+}
+.countryCircles {
+  opacity: 0.4;
+  fill: $fuchsia;
+}
+.countryCircles-active {
+  opacity: 1;
+  fill: $green;
+}
+.labelRect {
+  fill: white;
+  opacity: 0.8;
+}
+.dataLabels {
+  font-size: 12px;
+  background: white;
+  text-anchor: middle;
+}
+#countryName {
+  font-weight: 700;
+  text-transform: uppercase;
+}
