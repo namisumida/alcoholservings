@@ -9,7 +9,7 @@ body {
   margin: auto;
 }
 #intro-wrapper {
-  padding-top: 6rem;
+  padding-top: 1rem;
 }
 #intro {
   max-width: 40rem;
@@ -21,9 +21,7 @@ body {
   max-width: 500px;
   margin: auto;
   margin-top: 20px;
-  font-weight: 400;
   text-align: left;
-  font-size: 17px;
 }
 #author-date {
   max-width: 250px;
@@ -39,10 +37,20 @@ body {
   text-align: center;
 }
 #main {
-  max-width: 40rem;
+  max-width: 750px;
   padding: 1rem;
   margin: auto;
   height: 100%;
+}
+#searchbar-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.chartTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  max-width: 400px;
 }
 .triangle {
   opacity: 0.5;
@@ -60,16 +68,85 @@ body {
   opacity: 1;
   fill: $green;
 }
+.legendCircles {
+  fill: $fuchsia;
+}
 .labelRect {
   fill: white;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .dataLabels {
   font-size: 12px;
   background: white;
   text-anchor: middle;
 }
+.legendText {
+  font-size: 12px;
+}
+.instructions {
+  font-size: 14px;
+}
 #countryName {
   font-weight: 700;
   text-transform: uppercase;
+}
+.searchbar-input {
+  width: 30%;
+  height: 18px;
+  float: right;
+  margin-left: 110px;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  font-size: 11px;
+}
+.autocomplete-items div {
+  padding: 5px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid;
+  font-size: 11px;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: $green;
+  color: white;
+}
+@media screen and (min-width:399px) {
+  h1 {
+    font-size: 40px;
+    text-align: center;
+    margin: 0;
+    font-weight: 900;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 300;
+  }
+  p {
+    font-size: 15px;
+    font-weight: 200;
+    line-height: 1.5;
+  }
+}
+@media screen and (max-width:400px) {
+  h1 {
+    font-size: 26px;
+    text-align: center;
+    margin: 0;
+    font-weight: 900;
+  }
+  h3 {
+    font-size: 12px;
+    font-weight: 300;
+  }
+  p {
+    font-size: 12px;
+    font-weight: 200;
+    line-height: 1.5;
+  }
 }
