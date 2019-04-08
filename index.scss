@@ -1,8 +1,9 @@
-$green: #767A00;
-$fuchsia: #860037;
-$orange: #F69F19;
+$green: #4FCCC3;
+$pink: #FF6B6B;
+$orange: #E9C46A;
 $background: #D3C3B5;
-$darkPurple: #43384c;
+$darkPurple: #4A4E69;
+$highlightColor: #E9C46A;
 
 body {
   min-width: 300px;
@@ -72,7 +73,7 @@ body {
   fill: $orange;
 }
 .wineRect {
-  fill: $fuchsia;
+  fill: $pink;
 }
 .spiritsRect {
   fill: $green;
@@ -82,9 +83,12 @@ body {
   text-anchor: end;
 }
 .typeLabels {
-  font-size: 11px;
+  font-size: 13px;
   text-anchor: middle;
   font-weight: 700;
+}
+.numberLabels {
+  font-weight: 600;
 }
 button {
   background-color: $background;
@@ -130,8 +134,8 @@ button {
   max-width: 400px;
 }
 .triangle {
-  opacity: 0.5;
-  fill: $background;
+  opacity: 0.1;
+  fill: $darkPurple;
 }
 .axisLabels {
   font-weight: 700;
@@ -139,11 +143,12 @@ button {
 }
 .countryCircles {
   opacity: 0.4;
-  fill: $darkPurple;
 }
 .countryCircles-active {
   opacity: 1;
-  fill: $fuchsia;
+}
+.countryCircles-inactive {
+  opacity: 0.2;
 }
 .legendCircles {
   fill: $darkPurple;

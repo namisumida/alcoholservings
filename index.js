@@ -9,11 +9,11 @@ function init() {
   var maxServings = d3.max(dataset, function(d) { return d.total_servings; });
   var currView = 1;
   // Colors
-  var green = d3.color("#767A00");
-  var fuchsia = d3.color("#860037");
-  var orange = d3.color("#F69F19");
-  var background = d3.color("#D3C3B5");
-  var darkPurple = d3.color("#43384c");
+  var green = d3.color("#4FCCC3");
+  var pink = d3.color("#FF6B6B");
+  var orange = d3.color("#E9C46A");
+  var darkPurple = d3.color("#4A4E69");
+  var highlightColor = d3.color("#E9C46A");
   ///////////////// top 20 bars /////////////////////////////////////
   var svg_bars = d3.select("#svg-top");
   var w_svgBars = w - document.getElementById("text-top20-1").getBoundingClientRect().width;
@@ -96,7 +96,8 @@ function init() {
   function colorBars() {
     svg_bars.selectAll("#literLabels").style("fill", "none"); // hide total liters labels
     // Labels
-    svg_bars.selectAll(".typeLabels").style("fill", "black");
+    svg_bars.selectAll(".typeLabels")
+            .style("fill", "black");
     svg_bars.selectAll(".barGroups").select(".beerRect")
             .attr("height", h_bar);
     svg_bars.selectAll(".barGroups").select(".wineRect")
@@ -133,7 +134,7 @@ function init() {
             .style("fill", "none");
     svg_bars.selectAll(".beerGroups")
             .append("text")
-            .attr("class", "barLabels dataLabels")
+            .attr("class", "barLabels numberLabels")
             .text(function(d) { return d.beer_servings; })
             .attr("x", margin_list.left + 20 + w_barLabels)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -158,7 +159,7 @@ function init() {
             .style("fill", "none");
     svg_bars.selectAll(".wineGroups")
             .append("text")
-            .attr("class", "barLabels dataLabels")
+            .attr("class", "barLabels numberLabels")
             .text(function(d) { return d.wine_servings; })
             .attr("x", margin_list.left + w_list + 20 + w_barLabels)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -183,7 +184,7 @@ function init() {
             .style("fill", "none");
     svg_bars.selectAll(".spiritGroups")
             .append("text")
-            .attr("class", "barLabels dataLabels")
+            .attr("class", "barLabels numberLabels")
             .text(function(d) { return d.spirit_servings; })
             .attr("x", margin_list.left + w_list*2 + 20 + w_barLabels)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -194,19 +195,20 @@ function init() {
     svg_bars.selectAll(".barGroups").style("display", "none");
     // Beer
     svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "black");
-    svg_bars.selectAll(".beerGroups").select(".dataLabels").style("fill", orange);
+    svg_bars.selectAll(".beerGroups").select(".numberLabels").style("fill", orange);
     // Wine
     svg_bars.selectAll(".wineGroups").select(".barLabels").style("fill", "black");
-    svg_bars.selectAll(".wineGroups").select(".dataLabels").style("fill", fuchsia);
+    svg_bars.selectAll(".wineGroups").select(".numberLabels").style("fill", pink);
     // Spirits
     svg_bars.selectAll(".spiritGroups").select(".barLabels").style("fill", "black");
-    svg_bars.selectAll(".spiritGroups").select(".dataLabels").style("fill", green);
+    svg_bars.selectAll(".spiritGroups").select(".numberLabels").style("fill", green);
     svg_bars.selectAll(".typeLabels")
             .attr("x", function(d,i) {
               if (i==0) { return margin_list.left + w_list/2; }
               else if (i==1) { return margin_list.left + w_list*1.5; }
               else { return margin_list.left + w_list*2.5; }
-            });
+            })
+            .style("text-decoration", "underline");
   }; // end listBars
   setup_list();
   d3.select("#button-list").on("click", function() {
@@ -292,13 +294,19 @@ function init() {
                 .attr("r", function(d) { return rScale(d.total_servings); })
                 .attr("cx", function(d) { return coord([d.beer_share, d.wine_share, d.spirit_share])[0]; })
                 .attr("cy", function(d) { return coord([d.beer_share, d.wine_share, d.spirit_share])[1]; })
+                .style("fill", function(d) {
+                  if (d.beer_servings > d.wine_servings & d.beer_servings > d.spirit_servings) { return orange; }
+                  else if (d.wine_servings > d.beer_servings & d.wine_servings > d.spirit_servings) { return pink; }
+                  else if (d.spirit_servings > d.beer_servings & d.spirit_servings > d.wine_servings) { return green; }
+                })
                 .on("mouseover", function(d) {
                   mouseoverCircle(d3.select(this));
                 })
-              .on("mouseout", function() {
-                d3.select(".labelGroup").remove().exit();
-                d3.select(this).classed("countryCircles-active", false);
-              })
+                .on("mouseout", function() {
+                  d3.select(".labelGroup").remove().exit();
+                  d3.select(this).classed("countryCircles-active", false);
+                  d3.selectAll(".countryCircles").classed("countryCircles-inactive", false);
+                })
   }; // end setup
   function coord(arr) { // function that finds x y pos in triangle
 		var a = arr[0], b=arr[1], c=arr[2];
@@ -320,7 +328,8 @@ function init() {
   }; // end moveToFront function
   // Mouseover circles
   function mouseoverCircle(currCircle) {
-    d3.selectAll(".countryCircles").classed("countryCircles-active", false);
+    d3.select(".labelGroup").remove().exit();
+    d3.selectAll(".countryCircles").classed("countryCircles-active", false).classed("countryCircles-inactive", true);
     var currData = currCircle.data()[0];
     var currCountry = currData.country;
     var currRadius = parseFloat(currCircle.attr("r"));
@@ -359,7 +368,7 @@ function init() {
                   .text("Spirits: " + currData.spirit_servings)
                   .attr("x", function(d) { return (tooltipWidth+20)/2; })
                   .attr("y", function(d) { return 80; })
-    currCircle.classed("countryCircles-active", true);
+    currCircle.classed("countryCircles-active", true).classed("countryCircles-inactive", false);
   }; // end mouseoverCircle
   // Search bar and autocomplete
   function findCountry(country) {
@@ -562,19 +571,20 @@ function init() {
       svg_bars.selectAll(".barGroups").style("display", "block");
       // Hide lists
       svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".beerGroups").select(".dataLabels").style("fill", "none");
+      svg_bars.selectAll(".beerGroups").select(".numberLabels").style("fill", "none");
       // Wine
       svg_bars.selectAll(".wineGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".wineGroups").select(".dataLabels").style("fill", "none");
+      svg_bars.selectAll(".wineGroups").select(".numberLabels").style("fill", "none");
       // Spirits
       svg_bars.selectAll(".spiritGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".spiritGroups").select(".dataLabels").style("fill", "none");
+      svg_bars.selectAll(".spiritGroups").select(".numberLabels").style("fill", "none");
       svg_bars.selectAll(".typeLabels")
               .attr("x", function(d,i) {
                 if (i==0) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings)/2; }
                 else if (i==1) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings)/2; }
                 else { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings)/2; }
-              });
+              })
+              .style("text-decoration", "none");;
     }
     else if (newView==3) { // go back to list view
       svg_bars.style("display", "block");
