@@ -97,14 +97,31 @@ button {
   margin-left: 10px;
   margin-right: 10px;
 }
+#button-container {
+  display: flex;
+}
+#button-back {
+  display: none;
+}
 #button-color {
-  position: absolute;
-  top: 560px;
-  left: 230px;
+}
+#button-list {
+  display: none;
+}
+#button-triangle {
+  display: none;
 }
 #searchbar-container {
   display: flex;
   flex-wrap: wrap;
+}
+#section-triangle {
+  display: none;
+}
+#text-triangle {
+  position: absolute;
+  width: 250px;
+  top: 470px;
 }
 .chartTitle {
   font-size: 20px;

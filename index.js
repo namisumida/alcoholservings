@@ -3,7 +3,11 @@ function init() {
   var margin = { left: 10, right: 10, top: 10 };
   // Data
   var dataset20 = dataset.sort(function(a,b) { return b.total_servings-a.total_servings; }).slice(0,20);
+  var dataset_beer20 = dataset.sort(function(a,b) { return b.beer_servings-a.beer_servings; }).slice(0,20);
+  var dataset_wine20 = dataset.sort(function(a,b) { return b.wine_servings-a.wine_servings; }).slice(0,20);
+  var dataset_spirit20 = dataset.sort(function(a,b) { return b.spirit_servings-a.spirit_servings; }).slice(0,20);
   var maxServings = d3.max(dataset, function(d) { return d.total_servings; });
+  var currView = 1;
   // Colors
   var green = d3.color("#767A00");
   var fuchsia = d3.color("#860037");
@@ -56,51 +60,162 @@ function init() {
               else { return d.total_servings; }
             })
             .style("fill", "white");
-  }; // end setup_bars
-  function colorBars() {
-    svg_bars.selectAll("#literLabels").style("fill", "none"); // hide total liters labels
-    // Labels
+    // Set up colored bars
     svg_bars.selectAll("axisLabels")
             .data(["Beer", "Wine", "Spirits"])
             .enter()
             .append("text")
             .attr("class", "typeLabels")
             .attr("x", function(d,i) {
-              if (i==0) { return w_barLabels + 10 + barScale(dataset[0].beer_servings)/2; }
-              else if (i==1) { return w_barLabels + 10 + barScale(dataset[0].beer_servings) + barScale(dataset[0].wine_servings)/2; }
-              else { return w_barLabels + 10 + barScale(dataset[0].beer_servings) + barScale(dataset[0].wine_servings) + barScale(dataset[0].spirit_servings)/2; }
+              if (i==0) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings)/2; }
+              else if (i==1) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings)/2; }
+              else { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings)/2; }
             })
             .attr("y", margin.top)
-            .text(function(d) { return d; });
+            .text(function(d) { return d; })
+            .style("fill", "none");
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "beerRect")
             .attr("x", function(d) { return w_barLabels + 10; })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.beer_servings); })
-            .attr("height", h_bar);
+            .attr("width", function(d) { return barScale(d.beer_servings); });
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "wineRect")
             .attr("x", function(d) { return w_barLabels + 10 + barScale(d.beer_servings); })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.wine_servings); })
-            .attr("height", h_bar);
+            .attr("width", function(d) { return barScale(d.wine_servings); });
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "spiritsRect")
             .attr("x", function(d) { return w_barLabels + 10 + barScale(d.beer_servings) + barScale(d.wine_servings); })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.spirit_servings); })
+            .attr("width", function(d) { return barScale(d.spirit_servings); });
+  }; // end setup_bars
+  function colorBars() {
+    svg_bars.selectAll("#literLabels").style("fill", "none"); // hide total liters labels
+    // Labels
+    svg_bars.selectAll(".typeLabels").style("fill", "black");
+    svg_bars.selectAll(".barGroups").select(".beerRect")
+            .attr("height", h_bar);
+    svg_bars.selectAll(".barGroups").select(".wineRect")
+            .attr("height", h_bar);
+    svg_bars.selectAll(".barGroups").select(".spiritsRect")
             .attr("height", h_bar);
   }; // end color_bars
   setup_bars();
   // Interactivity
   d3.select("#button-color").on("click", function() {
+    currView = 2;
     d3.select("#text-top20-1").style("display", "none");
     d3.select("#text-top20-2").style("display", "block");
     colorBars();
+    d3.select("#button-color").style("display", "none");
+    d3.select("#button-back").style("display", "block");
+    d3.select("#button-list").style("display", "block");
   })
+  ///////////////// list svg  /////////////////////////////////////
+  var margin_list = { left: 20 };
+  var w_list = (w_svgBars-margin_list.left)/3;
+  function setup_list() {
+    svg_bars.selectAll("beerGroups")
+            .data(dataset_beer20)
+            .enter()
+            .append("g")
+            .attr("class", "beerGroups");
+    svg_bars.selectAll(".beerGroups")
+            .append("text")
+            .attr("class", "barLabels")
+            .text(function(d) { return d.country; })
+            .attr("x", margin_list.left + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("fill", "none");
+    svg_bars.selectAll(".beerGroups")
+            .append("text")
+            .attr("class", "barLabels dataLabels")
+            .text(function(d) { return d.beer_servings; })
+            .attr("x", margin_list.left + 20 + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("text-anchor", "middle")
+            .style("fill", "none");
+    // Wine
+    svg_bars.selectAll("wineGroups")
+            .data(dataset_wine20)
+            .enter()
+            .append("g")
+            .attr("class", "wineGroups");
+    svg_bars.selectAll(".wineGroups")
+            .append("text")
+            .attr("class", "barLabels")
+            .text(function(d) {
+              if (d.country=="Equatorial Guinea") { return "Eq. Guinea"; }
+              else if (d.country=="United Kingdom") { return "UK"; }
+              else { return d.country; }
+            })
+            .attr("x", margin_list.left + w_list + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("fill", "none");
+    svg_bars.selectAll(".wineGroups")
+            .append("text")
+            .attr("class", "barLabels dataLabels")
+            .text(function(d) { return d.wine_servings; })
+            .attr("x", margin_list.left + w_list + 20 + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("text-anchor", "middle")
+            .style("fill", "none");
+    // Spirits
+    svg_bars.selectAll("spiritGroups")
+            .data(dataset_spirit20)
+            .enter()
+            .append("g")
+            .attr("class", "spiritGroups");
+    svg_bars.selectAll(".spiritGroups")
+            .append("text")
+            .attr("class", "barLabels")
+            .text(function(d) {
+              if (d.country=="Russian Federation") { return "Russia"; }
+              else if (d.country=="St. Vincent & the Grenadines") { return "SVG"; }
+              else { return d.country; }
+            })
+            .attr("x", margin_list.left + w_list*2 + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("fill", "none");
+    svg_bars.selectAll(".spiritGroups")
+            .append("text")
+            .attr("class", "barLabels dataLabels")
+            .text(function(d) { return d.spirit_servings; })
+            .attr("x", margin_list.left + w_list*2 + 20 + w_barLabels)
+            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .style("text-anchor", "middle")
+            .style("fill", "none");
+  }; // end setup_list;
+  function listBars() {
+    svg_bars.selectAll(".barGroups").style("display", "none");
+    // Beer
+    svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "black");
+    svg_bars.selectAll(".beerGroups").select(".dataLabels").style("fill", orange);
+    // Wine
+    svg_bars.selectAll(".wineGroups").select(".barLabels").style("fill", "black");
+    svg_bars.selectAll(".wineGroups").select(".dataLabels").style("fill", fuchsia);
+    // Spirits
+    svg_bars.selectAll(".spiritGroups").select(".barLabels").style("fill", "black");
+    svg_bars.selectAll(".spiritGroups").select(".dataLabels").style("fill", green);
+    svg_bars.selectAll(".typeLabels")
+            .attr("x", function(d,i) {
+              if (i==0) { return margin_list.left + w_list/2; }
+              else if (i==1) { return margin_list.left + w_list*1.5; }
+              else { return margin_list.left + w_list*2.5; }
+            });
+  }; // end listBars
+  setup_list();
+  d3.select("#button-list").on("click", function() {
+    currView = 3;
+    listBars();
+    d3.select("#button-list").style("display", "none");
+    d3.select("#button-triangle").style("display", "block");
+  });
+
   ///////////////// triangle svg  /////////////////////////////////////
   var svg_triangle = d3.select("#svg-triangle");
   var w_triangle = w+70;
@@ -141,31 +256,6 @@ function init() {
                   if (i==0) { return -10; }
                   else { return 65; }
                 });
-    // Instructions
-    svg_triangle.append("g")
-                .attr("class", "instructionsGroup")
-                .attr("transform", "translate("+ 20 + "," + 60 + ")");
-    svg_triangle.select(".instructionsGroup")
-                .append("text")
-                .text("Each dot on the triangle is a country. The closer the dot is to a particular alcoholic drink, the more likely it is for an average person in that country to consume that drink than the others.")
-                .attr("class", "instructions")
-                .attr("x", 0)
-                .attr("y", 0)
-                .call(wrap, 250);
-    svg_triangle.select(".instructionsGroup")
-                .append("text")
-                .text("The larger the dot, the more alcohol is consumed by a person in that country.")
-                .attr("class", "instructions")
-                .attr("x", 0)
-                .attr("y", 110)
-                .call(wrap, 250);
-    svg_triangle.select(".instructionsGroup")
-                .append("text")
-                .text("Hover over each dot to see how many servings people in that country consume of each drink.")
-                .attr("class", "instructions")
-                .attr("x", 0)
-                .attr("y", 160)
-                .call(wrap, 250);
     // Draw triangle
     svg_triangle.append("g")
                 .attr("class", "triangle")
@@ -433,6 +523,70 @@ function init() {
     countryList.push(dataset[i].country);
   }
   autocomplete(document.getElementById("searchbar-country"), countryList); // autocomplete for search bar
+  d3.select("#button-triangle").on("click", function() {
+    currView = currView + 1;
+    svg_bars.style("display", "none"); // hide svg_bars
+    d3.select("#button-triangle").style("display", "none"); // hide button
+    d3.select("#text-top20-2").style("display", "none"); // hide text
+    d3.select("#section-triangle").style("display", "block"); // show svg
+  })
+
+  ///////////////// back   /////////////////////////////////////
+  function back(newView) {
+    if (newView==1) { // go back to 1st view (total bars)
+      d3.select("#text-top20-1").style("display", "block");
+      d3.select("#text-top20-2").style("display", "none");
+      // Buttons
+      d3.select("#button-back").style("display", "none");
+      d3.select("#button-color").style("display", "block");
+      d3.select("#button-list").style("display", "none");
+      // Bars - remove colored bars and label
+      svg_bars.selectAll("#literLabels").style("fill", "white"); // show total liters labels
+      // Labels
+      svg_bars.selectAll(".typeLabels").style("fill", "none");
+      svg_bars.selectAll(".barGroups").select(".beerRect")
+              .attr("height", 0);
+      svg_bars.selectAll(".barGroups").select(".wineRect")
+              .attr("height", 0);
+      svg_bars.selectAll(".barGroups").select(".spiritsRect")
+              .attr("height", 0);
+    }
+    else if (newView==2) { // go back to colored bars
+      // Text
+      d3.select("#text-top20-2").style("display", "block");
+      d3.select("#text-top20-2").style("display", "block");
+      // Buttons
+      d3.select("#button-list").style("display", "block");
+      d3.select("#button-triangle").style("display", "none");
+      // Bring bars back
+      svg_bars.selectAll(".barGroups").style("display", "block");
+      // Hide lists
+      svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "none");
+      svg_bars.selectAll(".beerGroups").select(".dataLabels").style("fill", "none");
+      // Wine
+      svg_bars.selectAll(".wineGroups").select(".barLabels").style("fill", "none");
+      svg_bars.selectAll(".wineGroups").select(".dataLabels").style("fill", "none");
+      // Spirits
+      svg_bars.selectAll(".spiritGroups").select(".barLabels").style("fill", "none");
+      svg_bars.selectAll(".spiritGroups").select(".dataLabels").style("fill", "none");
+      svg_bars.selectAll(".typeLabels")
+              .attr("x", function(d,i) {
+                if (i==0) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings)/2; }
+                else if (i==1) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings)/2; }
+                else { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings)/2; }
+              });
+    }
+    else if (newView==3) { // go back to list view
+      svg_bars.style("display", "block");
+      d3.select("#text-top20-2").style("display", "block");
+      d3.select("#section-triangle").style("display", "none");
+      d3.select("#button-triangle").style("display", "block");
+    }
+  };
+  d3.select("#button-back").on("click", function() {
+    currView = currView-1;
+    back(currView);
+  })
 }; // end init
 function rowConverter(d) {
   return {
