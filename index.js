@@ -810,6 +810,7 @@ function init() {
     colorBars();
     d3.select("#button-color").style("display", "none");
     d3.select("#button-list").style("display", "block");
+    document.getElementById("intro").scrollIntoView(); // scroll to top of main
   })
   // List
   d3.select("#button-list").on("click", function() {
@@ -823,6 +824,7 @@ function init() {
     listBars();
     d3.select("#button-list").style("display", "none");
     d3.select("#button-triangle").style("display", "block");
+    document.getElementById("intro").scrollIntoView(); // scroll to top of main
   });
   // Triangle page
   var countryList = [];

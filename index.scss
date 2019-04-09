@@ -19,7 +19,7 @@ body {
 }
 #intro-title {
   text-align: center;
-  font-weight: 900;
+  font-weight: 700;
 }
 #main {
   margin: auto;
@@ -144,10 +144,8 @@ button {
   text-transform: uppercase;
 }
 .searchbar-input {
-  width: 30%;
   height: 24px;
   float: right;
-  margin-left: 110px;
   padding: 0;
 }
 .autocomplete-items {
@@ -220,6 +218,9 @@ button {
   }
   #text-triangle {
     font-size: 13px;
+  }
+  .searchbar-input {
+    width: 30%;
   }
 }
 @media screen and (max-width:420px) {
