@@ -285,6 +285,11 @@ function init() {
                   if (i==0) { return "middle"; }
                   else if (i==1) { return "end"; }
                   else { return "start"; }
+                })
+                .style("fill", function(d,i) {
+                  if (i==0) { return orange; }
+                  else if (i==1) { return pink; }
+                  else { return green; }
                 });
     // Draw circles
     svg_triangle.selectAll("countryCircles")
