@@ -6,7 +6,7 @@ $darkPurple: #4A4E69;
 $highlightColor: #E9C46A;
 
 body {
-  min-width: 300px;
+  min-width: 320px;
   font-family: system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   margin: auto;
   padding: 1rem;
@@ -29,22 +29,33 @@ body {
   display: flex;
   margin-bottom: 10px;
 }
+#top20-text-container {
+  margin-bottom: 30px;
+}
 #text-top20-1 {
-  width: 250px;
   margin: 0;
 }
 #text-top20-2 {
   display: none;
-  width: 250px;
   margin: 0;
 }
-#text-top20-3 {
-  display: none;
-  width: 250px;
+#list-text-container {
   margin: 0;
+  display: none;
+  margin-bottom: 30px;
 }
 #svg-top {
   margin-left: 20px;
+  margin-bottom: 20px;
+}
+#section-list {
+  display: none;
+  margin-bottom: 20px;
+}
+#svg-list {
+  margin-left: 20px;
+  margin-bottom: 20px;
+  display: none;
 }
 .bars {
   fill: $darkPurple;
@@ -60,11 +71,9 @@ body {
   fill: $green;
 }
 .barLabels {
-  font-size: 12px;
   text-anchor: end;
 }
 .typeLabels {
-  font-size: 13px;
   text-anchor: middle;
   font-weight: 700;
 }
@@ -81,7 +90,6 @@ button {
   margin: 1px;
   margin-left: 10px;
   margin-right: 10px;
-  font-size: 13px;
 }
 #button-container {
   display: flex;
@@ -98,12 +106,7 @@ button {
 #section-triangle {
   display: none;
 }
-#text-triangle {
-  position: absolute;
-  width: 250px;
-}
 .chartTitle {
-  font-size: 20px;
   font-weight: 700;
   margin: 0;
   max-width: 400px;
@@ -114,7 +117,6 @@ button {
 }
 .axisLabels {
   font-weight: 700;
-  font-size: 16px;
 }
 .countryCircles {
   opacity: 0.4;
@@ -134,15 +136,8 @@ button {
   opacity: 0.9;
 }
 .dataLabels {
-  font-size: 12px;
   background: white;
   text-anchor: middle;
-}
-.legendText {
-  font-size: 12px;
-}
-.instructions {
-  font-size: 14px;
 }
 #countryName {
   font-weight: 700;
@@ -181,7 +176,6 @@ button {
   display: none;
 }
 #text-methods {
-  font-size: 11px;
   margin: 0;
 }
 @media screen and (min-width:399px) {
@@ -197,8 +191,38 @@ button {
     font-weight: 200;
     line-height: 1.5;
   }
+  .barLabels {
+    font-size: 12px;
+  }
+  .typeLabels {
+    font-size: 13px;
+  }
+  button {
+    font-size: 13px;
+  }
+  .chartTitle {
+    font-size: 20px;
+  }
+  .axisLabels {
+    font-size: 16px;
+  }
+  .dataLabels {
+    font-size: 12px;
+  }
+  .legendText {
+    font-size: 12px;
+  }
+  .instructions {
+    font-size: 14px;
+  }
+  #text-methods {
+    font-size: 11px;
+  }
+  #text-triangle {
+    font-size: 13px;
+  }
 }
-@media screen and (max-width:400px) {
+@media screen and (max-width:420px) {
   h1 {
     font-size: 26px;
   }
@@ -210,5 +234,35 @@ button {
     font-size: 12px;
     font-weight: 200;
     line-height: 1.5;
+  }
+  .barLabels {
+    font-size: 10px;
+  }
+  .typeLabels {
+    font-size: 12px;
+  }
+  button {
+    font-size: 11px;
+  }
+  .chartTitle {
+    font-size: 16px;
+  }
+  .axisLabels {
+    font-size: 12px;
+  }
+  .dataLabels {
+    font-size: 11px;
+  }
+  .legendText {
+    font-size: 10px;
+  }
+  .instructions {
+    font-size: 12px;
+  }
+  #text-methods {
+    font-size: 10px;
+  }
+  #text-triangle {
+    font-size: 12px;
   }
 }
