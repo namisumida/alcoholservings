@@ -10,43 +10,24 @@ body {
   font-family: system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   margin: auto;
   padding: 1rem;
-}
-#intro-wrapper {
-  padding-top: 1rem;
+  max-width: 750px;
 }
 #intro {
-  max-width: 40rem;
   padding: 1rem;
-  margin: 0 auto;
-  text-align: center;
-}
-#intro-subtitle {
-  max-width: 500px;
   margin: auto;
-  margin-top: 20px;
-  text-align: left;
+  margin-bottom: 10px;
 }
-#author-date {
-  max-width: 250px;
-  display: flex;
-  margin: auto;
-}
-#author {
-  width: 50%;
+#intro-title {
   text-align: center;
-}
-#date {
-  width: 50%;
-  text-align: center;
+  font-weight: 900;
 }
 #main {
-  max-width: 750px;
   margin: auto;
   height: 100%;
 }
 #section-top20 {
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 #text-top20-1 {
   width: 250px;
@@ -104,9 +85,6 @@ button {
 #button-container {
   display: flex;
 }
-#button-back {
-  display: none;
-}
 #button-color {
 }
 #button-list {
@@ -125,7 +103,7 @@ button {
 #text-triangle {
   position: absolute;
   width: 250px;
-  top: 470px;
+  top: 230px;
 }
 .chartTitle {
   font-size: 20px;
@@ -200,12 +178,18 @@ button {
   background-color: $green;
   color: white;
 }
+#methods {
+  margin: auto;
+  max-width: 550px;
+  display: none;
+}
+#text-methods {
+  font-size: 11px;
+  margin: 0;
+}
 @media screen and (min-width:399px) {
   h1 {
-    font-size: 40px;
-    text-align: center;
-    margin: 0;
-    font-weight: 900;
+    font-size: 35px;
   }
   h3 {
     font-size: 17px;
@@ -220,9 +204,6 @@ button {
 @media screen and (max-width:400px) {
   h1 {
     font-size: 26px;
-    text-align: center;
-    margin: 0;
-    font-weight: 900;
   }
   h3 {
     font-size: 12px;

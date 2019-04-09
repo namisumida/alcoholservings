@@ -113,7 +113,6 @@ function init() {
     d3.select("#text-top20-2").style("display", "block");
     colorBars();
     d3.select("#button-color").style("display", "none");
-    d3.select("#button-back").style("display", "block");
     d3.select("#button-list").style("display", "block");
   })
   ///////////////// list svg  /////////////////////////////////////
@@ -193,6 +192,8 @@ function init() {
   }; // end setup_list;
   function listBars() {
     svg_bars.selectAll(".barGroups").style("display", "none");
+    d3.select("#text-top20-2").style("display", "none");
+    d3.select("#text-top20-3").style("display", "block");
     // Beer
     svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "black");
     svg_bars.selectAll(".beerGroups").select(".numberLabels").style("fill", orange);
@@ -536,66 +537,10 @@ function init() {
     currView = currView + 1;
     svg_bars.style("display", "none"); // hide svg_bars
     d3.select("#button-triangle").style("display", "none"); // hide button
-    d3.select("#text-top20-2").style("display", "none"); // hide text
+    d3.select("#text-top20-3").style("display", "none"); // hide text
     d3.select("#section-triangle").style("display", "block"); // show svg
-  })
-
-  ///////////////// back   /////////////////////////////////////
-  function back(newView) {
-    if (newView==1) { // go back to 1st view (total bars)
-      d3.select("#text-top20-1").style("display", "block");
-      d3.select("#text-top20-2").style("display", "none");
-      // Buttons
-      d3.select("#button-back").style("display", "none");
-      d3.select("#button-color").style("display", "block");
-      d3.select("#button-list").style("display", "none");
-      // Bars - remove colored bars and label
-      svg_bars.selectAll("#literLabels").style("fill", "white"); // show total liters labels
-      // Labels
-      svg_bars.selectAll(".typeLabels").style("fill", "none");
-      svg_bars.selectAll(".barGroups").select(".beerRect")
-              .attr("height", 0);
-      svg_bars.selectAll(".barGroups").select(".wineRect")
-              .attr("height", 0);
-      svg_bars.selectAll(".barGroups").select(".spiritsRect")
-              .attr("height", 0);
-    }
-    else if (newView==2) { // go back to colored bars
-      // Text
-      d3.select("#text-top20-2").style("display", "block");
-      d3.select("#text-top20-2").style("display", "block");
-      // Buttons
-      d3.select("#button-list").style("display", "block");
-      d3.select("#button-triangle").style("display", "none");
-      // Bring bars back
-      svg_bars.selectAll(".barGroups").style("display", "block");
-      // Hide lists
-      svg_bars.selectAll(".beerGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".beerGroups").select(".numberLabels").style("fill", "none");
-      // Wine
-      svg_bars.selectAll(".wineGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".wineGroups").select(".numberLabels").style("fill", "none");
-      // Spirits
-      svg_bars.selectAll(".spiritGroups").select(".barLabels").style("fill", "none");
-      svg_bars.selectAll(".spiritGroups").select(".numberLabels").style("fill", "none");
-      svg_bars.selectAll(".typeLabels")
-              .attr("x", function(d,i) {
-                if (i==0) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings)/2; }
-                else if (i==1) { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings)/2; }
-                else { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings)/2; }
-              })
-              .style("text-decoration", "none");;
-    }
-    else if (newView==3) { // go back to list view
-      svg_bars.style("display", "block");
-      d3.select("#text-top20-2").style("display", "block");
-      d3.select("#section-triangle").style("display", "none");
-      d3.select("#button-triangle").style("display", "block");
-    }
-  };
-  d3.select("#button-back").on("click", function() {
-    currView = currView-1;
-    back(currView);
+    d3.select("#methods").style("display", "block"); // show methods text
+    document.getElementById("intro").scrollIntoView(); // scroll to top of main
   })
 }; // end init
 function rowConverter(d) {

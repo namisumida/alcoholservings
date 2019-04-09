@@ -9,39 +9,32 @@
 
 </head>
 <body>
-	<div id="intro-wrapper">
-	  <div id="intro">
-			<h1 id="intro-title">Which countries drink the most?</h1>
-			<h3 id="intro-subtitle">Using data from the World Health Organization, a look at each country's alcohol consumption.</h3>
-			<div id="author-date">
-				<h5 id="author">By Nami Sumida</h5>
-				<h5 id="date">April 2019</h5>
-			</div>
-		</div>
+  <div id="intro">
+		<h1 id="intro-title">Which countries drink the most?</h1>
 	</div>
 	<div id="main">
-		<p>Here are the top 20 countries that consume the most alcohol and the number of servings the average person drinks in a year.</p>
 		<div id="section-top20">
-			<p id="text-top20-1">Residents of Andorra, a small European country bordering France and Spain, drink the most, averaging 695 servings per year. That's about 2 drinks a day!
-				<br><br>And while most other countries in the top 20 are similarly European countries, the type of alcohol residents are drinking vary quite a bit by country.</p>
-			<p id="text-top20-2">Some countries primarily drink beer, like Czech Republic and Lithuania. France, unsurprisingly, mostly drinks wine - so does Portugal. And residents of Grenada tend to prefer spirits.</p>
-			<p id="text-top20-3"></p>
+			<p id="text-top20-1">Here are the top 20 countries that consume the most alcohol and the number of servings the average person drinks in a year. <br><br>Residents of Andorra, a small European country bordering France and Spain, drink the most, averaging 695 servings per year. That's about 2 drinks a day! <br><br>And while most other countries in the top 20 are similarly European countries, the type of alcohol residents are drinking vary quite a bit by country.</p>
+      <p id="text-top20-2">Residents in some countries primarily drink beer, like the Czech Republic and Lithuania. <br><br>The French, unsurprisingly, mostly drinks wine - and so do people in Portugal. <br><br>And residents of Grenada tend to prefer spirits over beer or wine. <br><br>But are these the countries whose residents consume the most of each drink?</p>
+      <p id="text-top20-3">These are the top 20 countries that consume the most of each drink.</p>
 			<svg id="svg-top"></svg>
 		</div>
 		<div id="section-triangle">
 			<p id="text-triangle">Each dot on the triangle is a country. The closer the dot is to a particular alcoholic drink, the more likely it is for an average person in that country to consume that drink than the others.<br><br>The larger the dot, the more alcohol is consumed by a person in that country.<br><br>Hover over each dot to see how many servings people in that country consume of each drink.</p>
 			<div id="searchbar-container">
-				<p class="chartTitle">Which type of alcohol do countries drink the most of?</p>
+				<p class="chartTitle">Which drinks do countries consume the most?</p>
 				<input class="searchbar-input" id="searchbar-country" type="text" placeholder="Search for a country">
 			</div>
 			<svg id="svg-triangle"></svg>
 		</div>
 		<div id="button-container">
-			<button id="button-back">Back</button>
-			<button id="button-color">Show me the breakdown of drinks</button>
-			<button id="button-list">Show me the top countries for each drink</button>
-			<button id="button-triangle">Show me all countries</button>
+			<button id="button-color">See the breakdown of drinks</button>
+			<button id="button-list">See the top countries for each drink</button>
+			<button id="button-triangle">See all countries</button>
 		</div>
+	</div>
+	<div id="methods">
+		<p id="text-methods">Data for this story come from <a href="https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/">FiveThirtyEight's analysis</a> of data from the World Health Organization.<br><br>All charts were developed using D3. You may find all the code and data for this project on <a href="https://github.com/namisumida/alcoholservings">GitHub.</a></p>
 	</div>
   <script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="index.js"></script>
