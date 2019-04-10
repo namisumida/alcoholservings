@@ -63,10 +63,7 @@ function init() {
             .attr("class", "barLabels")
             .attr("x", w_barLabels)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
-            .text(function(d) {
-              if (d.country=="Russian Federation") { return "Russia"; }
-              else  { return d.country; }
-            });
+            .text(function(d) { return d.country; });
     svg_bars.selectAll(".barGroups")
             .append("text")
             .attr("class", "barLabels")
@@ -306,8 +303,7 @@ function init() {
             .append("text")
             .attr("class", "barLabels")
             .text(function(d) {
-              if (d.country=="Russian Federation") { return "Russia"; }
-              else if (d.country=="St. Vincent & the Grenadines") { return "SVG"; }
+              if (d.country=="St. Vincent & the Grenadines") { return "SVG"; }
               else { return d.country; }
             })
             .attr("x", function() {
