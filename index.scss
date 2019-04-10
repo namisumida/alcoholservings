@@ -70,6 +70,15 @@ body {
 .spiritsRect {
   fill: $green;
 }
+.beerLabels {
+  text-anchor: end;
+}
+.wineLabels {
+  text-anchor: end;
+}
+.spiritLabels {
+  text-anchor: end;
+}
 .barLabels {
   text-anchor: end;
 }
@@ -222,6 +231,15 @@ button {
   .searchbar-input {
     width: 30%;
   }
+  .beerLabels {
+    font-size: 12px;
+  }
+  .wineLabels {
+    font-size: 12px;
+  }
+  .spiritLabels {
+    font-size: 12px;
+  }
 }
 @media screen and (max-width:420px) {
   h1 {
@@ -265,5 +283,14 @@ button {
   }
   #text-triangle {
     font-size: 12px;
+  }
+  .beerLabels {
+    font-size: 11px;
+  }
+  .wineLabels {
+    font-size: 11px;
+  }
+  .spiritLabels {
+    font-size: 11px;
   }
 }

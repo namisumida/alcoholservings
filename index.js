@@ -78,6 +78,9 @@ function init() {
               else { return d.total_servings; }
             })
             .style("fill", "white");
+  }; // end setup_bars
+  function colorBars() {
+    svg_bars.selectAll("#literLabels").style("fill", "none"); // hide total liters labels
     // Set up colored bars
     svg_bars.selectAll("axisLabels")
             .data(["Beer", "Wine", "Spirits"])
@@ -90,38 +93,76 @@ function init() {
               else { return w_barLabels + 10 + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings)/2; }
             })
             .attr("y", margin.top)
-            .text(function(d) { return d; })
-            .style("fill", "none");
+            .text(function(d) { return d; });
+    // Rectangles
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "beerRect")
             .attr("x", function(d) { return w_barLabels + 10; })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.beer_servings); });
+            .attr("width", function(d) { return barScale(d.beer_servings); })
+            .attr("height", h_bar);
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "wineRect")
             .attr("x", function(d) { return w_barLabels + 10 + barScale(d.beer_servings); })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.wine_servings); });
+            .attr("width", function(d) { return barScale(d.wine_servings); })
+            .attr("height", h_bar);
     svg_bars.selectAll(".barGroups")
             .append("rect")
             .attr("class", "spiritsRect")
             .attr("x", function(d) { return w_barLabels + 10 + barScale(d.beer_servings) + barScale(d.wine_servings); })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); })
-            .attr("width", function(d) { return barScale(d.spirit_servings); });
-  }; // end setup_bars
-  function colorBars() {
-    svg_bars.selectAll("#literLabels").style("fill", "none"); // hide total liters labels
-    // Labels
-    svg_bars.selectAll(".typeLabels")
-            .style("fill", "black");
-    svg_bars.selectAll(".barGroups").select(".beerRect")
+            .attr("width", function(d) { return barScale(d.spirit_servings); })
             .attr("height", h_bar);
-    svg_bars.selectAll(".barGroups").select(".wineRect")
-            .attr("height", h_bar);
-    svg_bars.selectAll(".barGroups").select(".spiritsRect")
-            .attr("height", h_bar);
+    // Mouseovers
+    // Add one that loads on init
+    svg_bars.append("text")
+            .attr("class", "beerLabels")
+            .attr("x", function() { return w_barLabels + barScale(dataset20[0].beer_servings) + 5; })
+            .attr("y", function() { return margin.top + h_typeLabels + (h_bar+h_barSpacing)/2 + 2; })
+            .text(function(d) { return dataset20[0].beer_servings + " servings"; });
+    svg_bars.append("text")
+            .attr("class", "wineLabels")
+            .attr("x", function() { return w_barLabels + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + 5; })
+            .attr("y", function() { return margin.top + h_typeLabels + (h_bar+h_barSpacing)/2 + 2; })
+            .text(function(d) { return dataset20[0].wine_servings; });
+    svg_bars.append("text")
+            .attr("class", "spiritLabels")
+            .attr("x", function() { return w_barLabels + barScale(dataset20[0].beer_servings) + barScale(dataset20[0].wine_servings) + barScale(dataset20[0].spirit_servings) + 5; })
+            .attr("y", function() { return margin.top + h_typeLabels + (h_bar+h_barSpacing)/2 + 2; })
+            .text(function(d) { return dataset20[0].spirit_servings; });
+    // Mouseover labels
+    svg_bars.selectAll(".barGroups").on("mouseover", function(d,i) {
+      d3.selectAll(".beerLabels").remove();
+      d3.selectAll(".wineLabels").remove();
+      d3.selectAll(".spiritLabels").remove();
+      var currGroup = d3.select(this);
+      var currY = parseInt(currGroup.select(".beerRect").attr("y"));
+      currGroup.append("text")
+               .attr("class", "beerLabels")
+               .attr("x", function() { return w_barLabels + barScale(d.beer_servings) + 5; })
+               .attr("y", function() { return currY + (h_bar+h_barSpacing)/2 + 2; })
+               .text(function(d) { return d.beer_servings; });
+      currGroup.append("text")
+               .attr("class", "wineLabels")
+               .attr("x", function() {
+                 if (i==2 | i==5 | i==9) { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + 15; }
+                 else { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + 5; }
+               })
+               .attr("y", function() { return currY + (h_bar+h_barSpacing)/2 + 2; })
+               .text(function(d) { return d.wine_servings; })
+               .style("text-anchor", function(d,i) {
+                 if (i==2 | i==5 | i==9) { return "start"; }
+                 else { return "end"; }
+               });
+      currGroup.append("text")
+               .attr("class", "spiritLabels")
+               .attr("x", function() { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + barScale(d.spirit_servings) + 5; })
+               .attr("y", function() { return currY + (h_bar+h_barSpacing)/2 + 2; })
+               .text(function(d) { return d.spirit_servings; });
+    });
   }; // end color_bars
   function resize_bars() {
     // Adjust bars
@@ -164,6 +205,14 @@ function init() {
     svg_bars.selectAll(".barGroups").select(".spiritsRect")
             .attr("x", function(d) { return w_barLabels + 10 + barScale(d.beer_servings) + barScale(d.wine_servings); })
             .attr("width", function(d) { return barScale(d.spirit_servings); });
+    // Mouseover labels
+    svg_bars.selectAll(".barGroups").selectAll(".beerLabels").attr("x", function(d) { return w_barLabels + barScale(d.beer_servings) + 5; });
+    svg_bars.selectAll(".barGroups").selectAll(".wineLabels")
+             .attr("x", function(d,i) {
+               if (i==2 | i==5 | i==9) { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + 15; }
+               else { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + 5; }
+             });
+    svg_bars.selectAll(".barGroups").selectAll(".spiritLabels").attr("x", function(d) { return w_barLabels + barScale(d.beer_servings) + barScale(d.wine_servings) + barScale(d.spirit_servings) + 5; });
   }; // end resize bars
   ////////////////////////////////////////////////////////////////////////
   ///////////////// list svg  /////////////////////////////////////
