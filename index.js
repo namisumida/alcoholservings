@@ -606,9 +606,58 @@ function init() {
   }; // end mouseoverCircle
   // Search bar and autocomplete
   function findCountry(country) {
-    svg_triangle.selectAll(".countryCircles")
-                .classed("countryCircles-active", false)
-    mouseoverCircle(d3.selectAll(".countryCircles").filter(function(d) { return d.country == country; }));
+    svg_triangle.selectAll(".countryCircles").classed("countryCircles-active", false);
+    var currCircle = d3.selectAll(".countryCircles").filter(function(d) { return d.country == country; });
+    if (currCircle.node()) { mouseoverCircle(currCircle); }
+    else {
+      d3.select(".labelGroup").remove().exit();
+      var tooltipWidth = d3.max([80, country.length*7], function(d) { return d; });
+      var tooltipHeight = 95;
+      if (w_window >= 690) {
+        var currY = document.getElementById("text-triangle").getBoundingClientRect().top + document.getElementById("text-triangle").getBoundingClientRect().height - document.getElementById("svg-triangle").getBoundingClientRect().top;
+      }
+      else {
+        var currY = document.getElementsByClassName("legendGroup")[0].getBoundingClientRect().top + document.getElementsByClassName("legendGroup")[0].getBoundingClientRect().height - document.getElementById("svg-triangle").getBoundingClientRect().top;
+      }
+      svg_triangle.append("g")
+                  .attr("class", "labelGroup")
+                  .attr("transform", "translate("+ 10 + "," + (currY+25) + ")");
+      svg_triangle.select(".labelGroup")
+                  .append("rect")
+                  .attr("class", "labelRect")
+                  .attr("x", 0)
+                  .attr("y", 0)
+                  .attr("width", tooltipWidth + 20)
+                  .attr("height", tooltipHeight)
+      svg_triangle.select(".labelGroup")
+                  .append("text")
+                  .attr("class", "dataLabels")
+                  .attr("id", "countryName")
+                  .text(country)
+                  .attr("x", function(d) { return (tooltipWidth+20)/2; })
+                  .attr("y", function(d) { return 20; });
+      svg_triangle.select(".labelGroup")
+                  .append("text")
+                  .attr("class", "dataLabels")
+                  .attr("id", "beerLabel")
+                  .text("Beer: 0")
+                  .attr("x", function(d) { return (tooltipWidth+20)/2; })
+                  .attr("y", function(d) { return 40; })
+      svg_triangle.select(".labelGroup")
+                  .append("text")
+                  .attr("class", "dataLabels")
+                  .attr("id", "wineLabel")
+                  .text("Wine: 0")
+                  .attr("x", function(d) { return (tooltipWidth+20)/2; })
+                  .attr("y", function(d) { return  60; })
+      svg_triangle.select(".labelGroup")
+                  .append("text")
+                  .attr("class", "dataLabels")
+                  .attr("id", "spiritLabel")
+                  .text("Spirits: 0")
+                  .attr("x", function(d) { return (tooltipWidth+20)/2; })
+                  .attr("y", function(d) { return 80; })
+    }; // end else
   }; // end findCountry
   function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
@@ -825,6 +874,9 @@ function init() {
                 .attr("r", function(d) { return rScale(d.total_servings); })
                 .attr("cx", function(d) { return coord([d.beer_share, d.wine_share, d.spirit_share])[0]; })
                 .attr("cy", function(d) { return coord([d.beer_share, d.wine_share, d.spirit_share])[1]; });
+    // Remove any mouseover groups
+    svg_triangle.selectAll(".labelGroup").remove().exit();
+    svg_triangle.selectAll(".countryCircles").classed("countryCircles-active", false);
   };
   ////////////////////////////////////////////////////////////////////////
   // Set up
