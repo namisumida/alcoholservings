@@ -10,7 +10,7 @@ body {
   font-family: system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   margin: auto;
   padding: 1rem;
-  max-width: 750px;
+  max-width: 650px;
 }
 #intro {
   padding: 1rem;
@@ -32,30 +32,27 @@ body {
 #top20-text-container {
   margin-bottom: 30px;
 }
+#colors-text-container {
+  margin-bottom: 30px;
+}
 #text-top20-1 {
   margin: 0;
-}
-#text-top20-2 {
-  display: none;
-  margin: 0;
-}
-#list-text-container {
-  margin: 0;
-  display: none;
-  margin-bottom: 30px;
 }
 #svg-top {
   margin-left: 20px;
   margin-bottom: 20px;
 }
+#svg-colors {
+  display: block;
+  margin: auto;
+}
 #section-list {
-  display: none;
   margin-bottom: 20px;
 }
 #svg-list {
-  margin-left: 20px;
   margin-bottom: 20px;
-  display: none;
+  display: block;
+  margin: 0 auto;
 }
 .bars {
   fill: $darkPurple;
@@ -99,21 +96,6 @@ button {
   margin: 1px;
   margin-left: 10px;
   margin-right: 10px;
-}
-#button-container {
-  display: flex;
-}
-#button-color {
-}
-#button-list {
-  display: none;
-}
-#button-triangle {
-  display: none;
-  margin-top: 20px;
-}
-#section-triangle {
-  display: none;
 }
 .chartTitle {
   font-weight: 700;
@@ -180,7 +162,6 @@ button {
 #methods {
   margin: auto;
   max-width: 550px;
-  display: none;
 }
 #text-methods {
   margin: 0;
