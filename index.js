@@ -1,6 +1,6 @@
 function init() {
   var w = document.getElementById("main").getBoundingClientRect().width;
-  var w_window = window.innerWidth;
+  var w_window = document.body.clientWidth;
   var margin = { left: 10, right: 10, top: 10 };
   document.getElementById("top20-text-container").style.width = w/3 + "px";
   document.getElementById("text-triangle").style.width = w*.3 + "px";
@@ -29,12 +29,16 @@ function init() {
     document.getElementById("top20-text-container").style.width = w + "px"; // make it full width
     document.getElementById("section-top20").style.display = "block";
     d3.select("#svg-top").style("margin-left", "0px");
+    d3.select("#top20-chartTitle").style("margin-left", "0px").style("margin-bottom", "25px");
+    d3.select("#top20-svg-container").style("margin-left", "0px");
   }
   else { // make it double panel view
     document.getElementById("top20-text-container").style.width = w/3 + "px";
     w_svgBars = w*2/3;
     document.getElementById("section-top20").style.display = "flex";
     d3.select("#svg-top").style("margin-left", "20px");
+    d3.select("#top20-chartTitle").style("margin-left", "30px").style("margin-bottom", "10px");
+    d3.select("#top20-svg-container").style("margin-left", "20px");
   }
   var h_bar = 20;
   var h_barSpacing = 5;
@@ -57,19 +61,19 @@ function init() {
             .attr("height", h_bar)
             .attr("width", function(d) { return barScale(d.total_servings); })
             .attr("x", w_barLabels + 10)
-            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing); });
+            .attr("y", function(d,i) { return margin.top + i*(h_bar+h_barSpacing); });
     svg_bars.selectAll(".barGroups")
             .append("text")
             .attr("class", "barLabels")
             .attr("x", w_barLabels)
-            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .attr("y", function(d,i) { return margin.top + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
             .text(function(d) { return d.country; });
     svg_bars.selectAll(".barGroups")
             .append("text")
             .attr("class", "barLabels")
             .attr("id", "literLabels")
             .attr("x", function(d) { return w_barLabels + barScale(d.total_servings); })
-            .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
+            .attr("y", function(d,i) { return margin.top + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
             .text(function(d,i) {
               if (i==0) { return d.total_servings + " servings"; }
               else { return d.total_servings; }
@@ -83,12 +87,16 @@ function init() {
       document.getElementById("top20-text-container").style.width = w + "px"; // make it full width
       document.getElementById("section-top20").style.display = "block";
       d3.select("#svg-top").style("margin-left", "0px");
+      d3.select("#top20-chartTitle").style("margin-left", "0px").style("margin-bottom", "25px");
+      d3.select("#top20-svg-container").style("margin-left", "0px");
     }
     else { // make it double panel view
       document.getElementById("top20-text-container").style.width = w/3 + "px";
       w_svgBars = w*2/3;
       document.getElementById("section-top20").style.display = "flex";
       d3.select("#svg-top").style("margin-left", "20px");
+      d3.select("#top20-chartTitle").style("margin-left", "30px").style("margin-bottom", "10px");
+      d3.select("#top20-svg-container").style("margin-left", "20px");
     }
     svg_bars.style("width", w_svgBars);
     barScale = d3.scaleLinear()
@@ -105,7 +113,8 @@ function init() {
   ////////////////////////////////////////////////////////////////////////
   //////////// colored bars /////////////////////////////////////////////
   var svg_colors = d3.select("#svg-colors");
-  w_svgColors = w*.8; // make it full width
+  if (w_window > 600) { w_svgColors = w*.8; }
+  else { w_svgColors = w; }
   svg_colors.style("width", w_svgColors);
   svg_colors.style("height", (h_bar+h_barSpacing)*20 + h_typeLabels + margin.top);
   var colorBarScale = d3.scaleLinear()
@@ -209,7 +218,8 @@ function init() {
     });
   }; // end color_bars
   function resize_colorBars() {
-    w_svgColors = w*.8; // make it full width
+    if (w_window > 600) { w_svgColors = w*.8; }
+    else { w_svgColors = w; }
     svg_colors.style("width", w_svgColors);
     colorBarScale = d3.scaleLinear()
                        .domain([0, maxServings])
@@ -253,7 +263,7 @@ function init() {
             .attr("class", "barLabels")
             .text(function(d) { return d.country; })
             .attr("x", function() {
-              if (w > 400) { return w_barLabels; }
+              if (w > 400) { return w_list*.65; }
               else { return w_list/2; }
             })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -269,7 +279,7 @@ function init() {
               if (w > 400) { return d.beer_servings; }
               else { return ""; }
             })
-            .attr("x", 20 + w_barLabels)
+            .attr("x", 20 + w_list*.65)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
             .style("text-anchor", "middle")
             .style("fill", orange);
@@ -287,7 +297,7 @@ function init() {
               else { return d.country; }
             })
             .attr("x", function() {
-              if (w > 400) { return w_list + w_barLabels; }
+              if (w > 400) { return w_list*1.65; }
               else { return w_list*1.5; }
             })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -303,7 +313,7 @@ function init() {
               if (w > 400) { return d.wine_servings; }
               else { return ""; }
             })
-            .attr("x", w_list + 20 + w_barLabels)
+            .attr("x", 20 + w_list*1.65)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
             .style("text-anchor", "middle")
             .style("fill", pink);
@@ -321,7 +331,7 @@ function init() {
               else { return d.country; }
             })
             .attr("x", function() {
-              if (w > 400) { return w_list*2 + w_barLabels; }
+              if (w > 400) { return w_list*2.65; }
               else { return w_list*2.5; }
             })
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
@@ -337,7 +347,7 @@ function init() {
               if (w > 400) { return d.spirit_servings; }
               else { return ""; }
             })
-            .attr("x", w_list*2 + 20 + w_barLabels)
+            .attr("x", w_list*2.65 + 20)
             .attr("y", function(d,i) { return margin.top + h_typeLabels + i*(h_bar+h_barSpacing)+(h_bar+h_barSpacing)/2 + 2; })
             .style("text-anchor", "middle")
             .style("fill", green);
@@ -346,7 +356,10 @@ function init() {
             .enter()
             .append("text")
             .attr("class", "typeLabels")
-            .attr("x", function(d,i) { return w_barLabels + w_list*i; })
+            .attr("x", function(d,i) {
+              if (w > 400) { return w_list*.6 + w_list*i; }
+              else { return w_list/2 + w_list*i; }
+            })
             .attr("y", margin.top)
             .text(function(d) { return d; })
             .style("text-decoration", "underline")
@@ -358,14 +371,13 @@ function init() {
     w_list = w_svgList/3;
     svg_list.selectAll(".typeLabels")
             .attr("x", function(d,i) {
-              if (i==0) { return w_list/2; }
-              else if (i==1) { return w_list*1.5; }
-              else { return w_list*2.5; }
-            })
+              if (w > 400) { return w_list*.6 + w_list*i; }
+              else { return w_list/2 + w_list*i; }
+            });
     // Beer
     svg_list.selectAll(".beerGroups").select(".barLabels")
             .attr("x", function() {
-              if (w > 400) { return w_barLabels; }
+              if (w > 400) { return w_list*.65; }
               else { return w_list/2; }
             })
             .style("text-anchor", function() {
@@ -377,11 +389,11 @@ function init() {
               if (w > 400) { return d.beer_servings; }
               else { return ""; }
             })
-            .attr("x", 20 + w_barLabels);
+            .attr("x", 20 + w_list*.65);
     // Wine
     svg_list.selectAll(".wineGroups").select(".barLabels")
             .attr("x", function() {
-              if (w > 400) { return w_list + w_barLabels; }
+              if (w > 400) { return w_list + w_list*.65; }
               else { return w_list*1.5; }
             })
             .style("text-anchor", function() {
@@ -393,11 +405,11 @@ function init() {
               if (w > 400) { return d.wine_servings; }
               else { return ""; }
             })
-            .attr("x", w_list + 20 + w_barLabels);
+            .attr("x", w_list + 20 + w_list*.65);
     // Spirits
     svg_list.selectAll(".spiritGroups").select(".barLabels")
             .attr("x", function() {
-              if (w > 400) { return w_list*2 + w_barLabels; }
+              if (w > 400) { return w_list*2 + w_list*.65; }
               else { return w_list*2.5; }
             })
             .style("text-anchor", function() {
@@ -409,7 +421,7 @@ function init() {
               if (w > 400) { return d.spirit_servings; }
               else { return ""; }
             })
-            .attr("x", w_list*2 + 20 + w_barLabels);
+            .attr("x", w_list*2 + 20 + w_list*.65);
   }
   ////////////////////////////////////////////////////////////////////////
   ///////////////// triangle svg  /////////////////////////////////////
@@ -419,7 +431,7 @@ function init() {
   svg_triangle.style("width", w);
   svg_triangle.style("height", h_triangle);
   var textTriangle = document.getElementById("text-triangle");
-  if (w_window >= 690) {
+  if (w_window >= 640) {
     textTriangle.style.width = w*.3 + "px";
     textTriangle.style.position = "absolute";
   }
@@ -428,7 +440,7 @@ function init() {
     textTriangle.style.position = "relative";
   }
   // Scales
-  if (w_window > 600) { var r_max = 20; }
+  if (w_window > 640) { var r_max = 20; }
   else if (w_window > 500) { var r_max = 18; }
   else { var r_max = 15; }
   var rScale = d3.scaleLinear()
@@ -437,7 +449,7 @@ function init() {
   var corners = [[w_triangle/2, h_triangle/6+5],[w_triangle/6+5, 5/6*h_triangle-5],[w_triangle*5/6-10, 5/6*h_triangle-5]];
   function setup_triangle() {
     // Legends
-    if (w_window >= 690) {
+    if (w_window >= 640) {
       svg_triangle.append("g").attr("class", "legendGroup").attr("transform", "translate(" + w_triangle*3/4 + "," + h_triangle/5 + ")");
     }
     else {
@@ -598,7 +610,7 @@ function init() {
       d3.select(".labelGroup").remove().exit();
       var tooltipWidth = d3.max([80, country.length*7], function(d) { return d; });
       var tooltipHeight = 95;
-      if (w_window >= 690) {
+      if (w_window >= 640) {
         var currY = document.getElementById("text-triangle").getBoundingClientRect().top + document.getElementById("text-triangle").getBoundingClientRect().height - document.getElementById("svg-triangle").getBoundingClientRect().top;
       }
       else {
@@ -794,7 +806,7 @@ function init() {
   }; // end wrap function
   function resize_triangle() {
     var textTriangle = document.getElementById("text-triangle");
-    if (w_window >= 690) {
+    if (w_window >= 640) {
       textTriangle.style.width = w*.3 + "px";
       textTriangle.style.position = "absolute";
     }
@@ -807,14 +819,14 @@ function init() {
     svg_triangle.style("width", w);
     svg_triangle.style("height", h_triangle);
     corners = [[w_triangle/2, h_triangle/6+5],[w_triangle/6+5, 5/6*h_triangle-5],[w_triangle*5/6-10, 5/6*h_triangle-5]];
-    if (w_window > 600) { var r_max = 20; }
+    if (w_window > 640) { var r_max = 20; }
     else if (w_window > 500) { var r_max = 18; }
     else { var r_max = 15; }
     rScale = d3.scaleLinear()
                .domain([0, maxServings])
                .range([3, r_max]);
     // Legends
-    if (w_window >= 690) {
+    if (w_window >= 640) {
       svg_triangle.select(".legendGroup").attr("transform", "translate(" + w_triangle*3/4 + "," + h_triangle/5 + ")");
     }
     else {
@@ -874,7 +886,7 @@ function init() {
     w = document.getElementById("main").getBoundingClientRect().width;
     document.getElementById("top20-text-container").style.width = w/3 + "px";
     w_svgBars = w*2/3;
-    w_window = window.innerWidth;
+    w_window = document.body.clientWidth;
     if (w_window <= 400) {
       w_barLabels = 85;
     }
