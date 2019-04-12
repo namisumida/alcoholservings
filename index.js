@@ -191,7 +191,7 @@ function init() {
       currGroup.append("text")
                .attr("class", "wineLabels")
                .attr("x", function() {
-                 if (i==2 | i==5 | i==9) { return w_barLabels + colorBarScale(d.beer_servings) + colorBarScale(d.wine_servings) + 15; }
+                 if (i==2 | i==5 | i==9) { return w_barLabels + colorBarScale(d.beer_servings) + colorBarScale(d.wine_servings) + 8; }
                  else if (i==11 | i==12 | i==16 | i==19) { return w_barLabels + colorBarScale(d.beer_servings) + colorBarScale(d.wine_servings) - 5; }
                  else { return w_barLabels + colorBarScale(d.beer_servings) + colorBarScale(d.wine_servings) + 5; }
                })
@@ -283,8 +283,7 @@ function init() {
             .append("text")
             .attr("class", "barLabels")
             .text(function(d) {
-              if (d.country=="Equatorial Guinea") { return "Eq. Guinea"; }
-              else if (d.country=="United Kingdom") { return "UK"; }
+              if (d.country=="United Kingdom") { return "UK"; }
               else { return d.country; }
             })
             .attr("x", function() {
@@ -347,11 +346,7 @@ function init() {
             .enter()
             .append("text")
             .attr("class", "typeLabels")
-            .attr("x", function(d,i) {
-              if (i==0) { return w_list/2; }
-              else if (i==1) { return w_list*1.5; }
-              else { return w_list*2.5; }
-            })
+            .attr("x", function(d,i) { return w_barLabels + w_list*i; })
             .attr("y", margin.top)
             .text(function(d) { return d; })
             .style("text-decoration", "underline")
@@ -419,7 +414,7 @@ function init() {
   ////////////////////////////////////////////////////////////////////////
   ///////////////// triangle svg  /////////////////////////////////////
   var svg_triangle = d3.select("#svg-triangle");
-  var w_triangle = w+70;
+  var w_triangle = w+40;
   var h_triangle = w*Math.sqrt(3)/2;
   svg_triangle.style("width", w);
   svg_triangle.style("height", h_triangle);
@@ -807,7 +802,7 @@ function init() {
       textTriangle.style.width = w + "px";
       textTriangle.style.position = "relative";
     }
-    w_triangle = w+70;
+    w_triangle = w+40;
     h_triangle = w*Math.sqrt(3)/2;
     svg_triangle.style("width", w);
     svg_triangle.style("height", h_triangle);
