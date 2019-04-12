@@ -14,13 +14,10 @@ function init() {
   var dataset_wine20 = dataset.sort(function(a,b) { return b.wine_servings-a.wine_servings; }).slice(0,20);
   var dataset_spirit20 = dataset.sort(function(a,b) { return b.spirit_servings-a.spirit_servings; }).slice(0,20);
   var maxServings = d3.max(dataset, function(d) { return d.total_servings; });
-  var currView = 1;
   // Colors
   var green = d3.color("#4FCCC3");
   var pink = d3.color("#FF6B6B");
   var orange = d3.color("#E9C46A");
-  var darkPurple = d3.color("#4A4E69");
-  var highlightColor = d3.color("#E9C46A");
   ////////////////////////////////////////////////////////////////////////
   ///////////////// top 20 bars /////////////////////////////////////
   var svg_bars = d3.select("#svg-top");
@@ -44,7 +41,7 @@ function init() {
   var h_barSpacing = 5;
   var h_typeLabels = 10;
   svg_bars.style("width", w_svgBars);
-  svg_bars.style("height", (h_bar+h_barSpacing)*20 + h_typeLabels + margin.top);
+  svg_bars.style("height", (h_bar+h_barSpacing)*20 + margin.top);
   var barScale = d3.scaleLinear()
                    .domain([0, maxServings])
                    .range([0, w_svgBars-w_barLabels-25]); // 10 for spacing between labels and bars and another 15 for margin right
@@ -884,12 +881,8 @@ function init() {
   // Resize
   window.addEventListener("resize", function() {
     w = document.getElementById("main").getBoundingClientRect().width;
-    document.getElementById("top20-text-container").style.width = w/3 + "px";
-    w_svgBars = w*2/3;
     w_window = document.body.clientWidth;
-    if (w_window <= 400) {
-      w_barLabels = 85;
-    }
+    if (w_window <= 400) { w_barLabels = 85; }
     else { w_barLabels = 95; }
     resize_bars();
     resize_colorBars();
